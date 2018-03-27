@@ -1,0 +1,154 @@
+<html>
+<style>
+	
+	button{ 
+		color: blue;
+	}
+	body{
+		background-color: orange;
+	}
+	.card{
+		width:300px;
+		background-color:white;
+		padding:10px;
+		margin:10px;
+		display:inline-block;
+		border-radius:10px;
+		box-shadow:black 5px 5px 5px;
+	}
+	h1{
+		font-family:"Comic-Sans";
+		color: purple;
+		text-shadow:yellow 1px 1px 1px;
+	}
+		
+	a{
+		
+		text-decoration:none;
+		color:blue;
+		font-weight:bold;
+		padding:5px;
+	}
+	input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+    width: 30%;
+	
+}
+div:hover {
+	background-color:red;
+    -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+	position: relative;
+    -webkit-animation: mymove 5s infinite; /* Safari 4.0 - 8.0 */
+    animation: mymove 5s infinite;
+}
+	/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+    from {color: red;}
+    to {color: yellow;}
+}
+
+
+@keyframes mymove {
+    from {left: 0px;}
+    to {left: 200px;}
+}
+#map {
+        width: 100%;
+        height: 400px;
+      }
+
+</style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+<script type= "text/template" id="business">
+	<div class='table'>
+		<h2> {{company_name}} </h2>
+		<h3> Type:{{subindustry}} </h3>
+		<h3> {{address}}<h3>
+		<img src = "staticmap_orig.png" width="500"></img>
+		<h3> {{postcode}}<h3>
+		<h3> Phone number:{{phone}} </h3>
+		<a href = "website">{{website}}</a>
+	</div>
+	
+</script>
+
+<script>
+	
+var data="";
+
+	function Timesq(){				
+		$.getJSON("https://data.cityofnewyork.us/resource/d9fw-zp4j.json",function(results){
+			data = results;
+		})
+	} 
+    
+	 
+	function food(){
+		var build = "";
+		
+		
+		
+		
+		
+		var place = document.getElementById("place");
+		var output = document.getElementById("output");
+		
+		var busy = document.getElementById("business").innerHTML;
+		
+		for(var index = 0; index < data.length; index++){
+		
+		   if(data[index].company_name.toUpperCase().indexOf(place.value.toUpperCase()) != -1 ){
+			build += Mustache.render(busy, data[index]);
+			
+		  
+		  } 
+		}	
+		output.innerHTML = build;	
+	}
+	
+</script>
+
+
+
+
+	
+
+	
+
+</script>
+
+<body onload="Timesq()">
+	<body onload = "food()"></body>
+	<h1> Times Square Food and Beverage location Cards</h1>
+	<p> <i>Want To know what to eat in Times Square. No worries! Becuase we are here. Every food and drink locations are here in Times Square, one of the Big Apple's biggest attractions. We give you an overview of the businesses in Times Square. Any information missing just call!</i></p><br>
+	<input type="text" id="place" placeholder="enter restuarant">
+	
+	
+	
+	
+	
+	<button onclick="food()">Search</button>
+	<div id = "output"</div>
+	
+	
+</body>
+
+</html>
